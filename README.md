@@ -1,1 +1,1 @@
-# CC - Ciencias de la computación
+# Ciencias de la computación
