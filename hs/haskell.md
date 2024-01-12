@@ -1,12 +1,11 @@
 ## Contenidos
 
-- [Haskell](#hs)
- 	- [Funciones nativas](#nativas)
-   	- [Temas](#temas)
-   		- [Funciónes de Orden Superior](#f_ord_sup)
-   	  		- [Folding](#folding)
-   	  	- [Módulos](#modulos)
-   	- [Codewars](#codeWars)
+- [Funciones nativas](#nativas)
+- [Temas](#temas)
+  - [Funciónes de Orden Superior](#f_ord_sup)
+    - [Folding](#folding)
+  - [Módulos](#modulos)
+- [Codewars](#codeWars)
   
 <a name="hs"></a>
 # [Haskell](#http://aprendehaskell.es/main.html)
