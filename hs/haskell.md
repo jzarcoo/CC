@@ -24,15 +24,20 @@ concatMap :: (a -> [b]) -> [a] -> [b]
  -- Se utiliza para crear una lista que contiene múltiples repeticiones de un mismo valor.
 replicate :: Int -> a -> [a]
 
+-- Toman un predicado y una lista y comprueban si el predicado se satisface para algún o para todos los elementos respectivamente.
+all :: Foldable t => (a -> Bool) -> t a -> Bool
+any :: Foldable t => (a -> Bool) -> t a -> Bool
+
+-- Divide la cadena en palabras utilizando espacios en blanco (espacios, tabulaciones, y saltos de línea) como delimitadores
+words :: String -> [String]
+-- Toma una lista de palabras y las concatena en una única cadena, separando cada palabra por un espacio en blanco.
+unwords :: [String] -> String
+
 -- Tomar los primeros n elementos de una lista
 take :: Int -> [a] -> [a]
 
 -- Se utiliza para eliminar los primeros n elementos de una lista.
 drop :: Int -> [a] -> [a]
-
--- Toman un predicado y una lista y comprueban si el predicado se satisface para algún o para todos los elementos respectivamente.
-all :: Foldable t => (a -> Bool) -> t a -> Bool
-any :: Foldable t => (a -> Bool) -> t a -> Bool
 
 -- Toma una lista de booleanos y devuelve True solo si todos los elementos de la lista son True.
 and :: Foldable t => t Bool -> Bool
@@ -478,8 +483,22 @@ all' :: (a -> Bool) -> [a] -> Bool
 all' func lst = and $ map func lst
 ```
 
-16. ****
+16. **Stop gninnipS My sdroW!**
+
+Write a function that takes in a string of one or more words, and returns the same string, but with all words that have five or more letters reversed (Just like the name of this Kata). Strings passed in will consist of only letters and spaces. Spaces will be included only when more than one word is present.
+
+Examples:
+
+"Hey fellow warriors"  --> "Hey wollef sroirraw" 
+"This is a test        --> "This is a test" 
+"This is another test" --> "This is rehtona test"
+
 ```hs
+spinWords :: String -> String
+spinWords str = drop 1 $ foldl f [] strToList
+ where
+  strToList = words str
+  f acc elem = acc ++ " " ++ (if (length elem >= 5 ) then reverse elem else elem)
 ```
 
 17. ****
