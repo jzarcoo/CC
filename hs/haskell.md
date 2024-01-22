@@ -137,6 +137,11 @@ odd :: Integral a => a -> Bool
 -- ¿Es par?
 even :: Integral a => a -> Bool
 
+-- Máximo entre 2 elementos
+max :: Ord a => a -> a -> a
+-- Mínimo entre 2 elementos
+min :: Ord a => a -> a -> a
+
 -- Elemento siguiente
 succ :: Enum a => a -> a
 
@@ -159,6 +164,11 @@ div :: Integral a => a -> a -> a --div 5 2 = 2
 ```hs
 Eq
 
+-- Tipos que poseen orden
+Ord
+-- Toma 2 miembros de la clase y devuelve su orden (GT, EQ, LT)
+compare :: Ord a => a -> a -> Ordering
+
 -- Toma una cadena y devuelve un valor del tipo
 read :: Read a => String -> a
 
@@ -178,9 +188,76 @@ Floating
 <a name="recursion"></a>
 ### Recursión
 
+Implementación de funciones nativas
+
+```hs
+-- Regresa el elemento más grande en una lista
+maximum' :: (Ord a) => [a] -> a
+maximum' [] = error "Lista vacía"
+maximum' [x] = x
+maximum' (x:xs)
+ | x > maxTail = x
+ | otherwise = maxTail
+   where
+     maxTail = maximum' xs
+
+maximum'' :: (Ord a) => [a] -> a
+maximum'' [] = error "Lista vacía"
+maximum'' [x] = x
+maximum'' (x:xs) = x `max` maximum'' xs
+
+-- Regresa el elemento más pequeño en una lista
+minimum' :: (Ord a) => [a] -> a
+minimum' [] = error "Lista vacía"
+minimum' [x] = x
+minimum' (x:xs)
+ | x < minTail = x
+ | otherwise = minTail
+ where
+   minTail = minimum' xs
+
+minimum'' :: (Ord a) => [a] -> a
+minimum'' [] = error "Lista vacía"
+minimum'' [x] = x
+minimum'' (x:xs) = x `min` minimum'' xs
+
+-- Toma un Int y algún elemento y devuelve una lista con repeticiones de ese elemento
+replicate' :: (Num i, Ord i) => i -> a -> [a]
+replicate' 0 _ = [] -- n <= 0
+replicate' n elem = elem : replicate' (n - 1) elem
+
+-- Toma un Int y una lista y regresa los primeros elementos de una lista
+take' :: (Num i, Ord i) => i -> [a] -> [a]
+take' n _
+ | n <= 0 = []
+take' _ [] = []
+take' n (x:xs) = x : take' (n - 1) xs
+
+reverse' :: [a] -> [a]
+reverse' [] = []
+reverse' (x:xs) = reverse' xs ++ [x]
+
+-- Infinito
+repeat' :: a -> [a]
+repeat' x = x : repeat' x
+
+zip' :: [a] -> [b] -> [(a, b)]
+zip' _ [] = []
+zip' [] _ = []
+zip' (a:as) (b:bs) = (a,b) : zip' as bs
+```
+
 QuickSort
 ```hs
-
+-- It isn't in-place
+quicksort :: (Ord a) => [a] -> [a]
+quicksort [] = []
+quicksort (x:xs) =
+  let
+    smallerSorted = quicksort [a | a<-xs, a<=x]
+    biggerSorted = quicksort [a | a<-xs, a>x]
+  in
+    smallerSorted ++ [x] ++ biggerSorted
 ```
 
 <a name="f_ord_sup"></a>
