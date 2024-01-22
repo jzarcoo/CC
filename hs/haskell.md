@@ -1,7 +1,6 @@
 ## Contenidos
 
 - [Funciones nativas](#nativas)
-  - [Operadores](#operadores)
   - [Listas](#listas)
     - [Listas infinitas](#listas_infinitas)
   - [Tuplas](#tuplas)
@@ -20,19 +19,6 @@
 
 <a name="nativas"></a>
 ## Funciones nativas
-
-<a name="operadores"></a>
-### Operadores
-
-```hs
--- Este operador se utiliza para agregar un elemento al principio de una lista
--- '' char
-:
-
--- Este operador se utiliza para concatenar dos listas
--- "" string
-++
-```
 
 <a name="listas"></a>
 ### Listas
@@ -83,6 +69,14 @@ init :: [a] -> [a]
 
 -- Obtener el elemento de una lista sabiendo su índice
 (!!) :: [a] -> Int -> a
+
+-- Este operador se utiliza para agregar un elemento al principio de una lista
+-- '' char
+(:)
+
+-- Este operador se utiliza para concatenar dos listas
+-- "" string
+(++)
 ```
 
 <a name="listas_infinitas"></a>
@@ -171,6 +165,8 @@ compare :: Ord a => a -> a -> Ordering
 
 -- Toma una cadena y devuelve un valor del tipo
 read :: Read a => String -> a
+-- Anotaciones de tipo. Ejemplo:
+read "(3, 'a')" :: (Int, Char)
 
 show :: Show a => a -> String
 
