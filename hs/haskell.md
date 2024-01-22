@@ -62,6 +62,9 @@ drop :: Int -> [a] -> [a]
 and :: Foldable t => t Bool -> Bool
 -- Devuelve True solo si existe algún elemento True en la lista.
 or :: Foldable t => t Bool -> Bool
+
+-- Obtener el elemento de una lista sabiendo su índice
+(!!) :: [a] -> Int -> a
 ```
 
 <a name="listas_infinitas"></a>
