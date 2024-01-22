@@ -1,8 +1,16 @@
 ## Contenidos
 
 - [Funciones nativas](#nativas)
+  - [Operadores](#operadores)
+  - [Listas](#listas)
+    - [Listas infinitas](#listas_infinitas)
+  - [Tuplas](#tuplas)
+  - [Otras](#Otras)
 - [Temas](#temas)
+  - [Tipos y clases de tipos](#tipos_clases)
+  - [Recursión](#recursion)
   - [Funciónes de Orden Superior](#f_ord_sup)
+    - [Currying](#currying)
     - [Folding](#folding)
   - [Módulos](#modulos)
 - [Codewars](#codeWars)
@@ -62,6 +70,16 @@ drop :: Int -> [a] -> [a]
 and :: Foldable t => t Bool -> Bool
 -- Devuelve True solo si existe algún elemento True en la lista.
 or :: Foldable t => t Bool -> Bool
+
+-- 1er elemento
+head :: [a] -> a
+-- Sin el 1er elemento
+tail :: [a] -> [a]
+
+-- Último elemento
+last :: [a] -> a
+-- Sin el último elemento
+init :: [a] -> [a]
 
 -- Obtener el elemento de una lista sabiendo su índice
 (!!) :: [a] -> Int -> a
@@ -157,8 +175,19 @@ Integral
 Floating
 ```
 
+<a name="recursion"></a>
+### Recursión
+
+QuickSort
+```hs
+
+```
+
 <a name="f_ord_sup"></a>
 ### Funciónes de Orden Superior
+
+<a name="currying"></a>
+#### Currying
 
 <a name="folding"></a>
 #### Folding
