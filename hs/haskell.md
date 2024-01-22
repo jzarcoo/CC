@@ -1,29 +1,38 @@
+<a name="hs"></a>
+# Haskell
+
 ## Contenidos
 
-- [Funciones nativas](#nativas)
-  - [Listas](#listas)
-    - [Listas infinitas](#listas_infinitas)
-  - [Tuplas](#tuplas)
-  - [Otras](#Otras)
-- [Temas](#temas)
-  - [Tipos y clases de tipos](#tipos_clases)
-  - [Recursión](#recursion)
-  - [Funciónes de Orden Superior](#f_ord_sup)
+- [Native Functions](#nativas)
+  - [Lists](#listas)
+    - [Infinite lists](#listas_infinitas)
+  - [Tuples](#tuplas)
+  - [Higher Order Functions](#nf_higher_order_functions)
+  - [Others](#otras)
+- [Topics](#temas)
+  - [Types and Typeclasses](#tipos_clases)
+  - [Recursion](#recursion)
+  - [Higher Order Functions](#f_ord_sup)
     - [Currying](#currying)
+       - [Partial Application](#partial_application)
     - [Folding](#folding)
   - [Módulos](#modulos)
 - [Codewars](#codeWars)
   
-<a name="hs"></a>
-# [Haskell](#http://aprendehaskell.es/main.html)
+---
 
 <a name="nativas"></a>
-## Funciones nativas
+## Native Functions
 
 <a name="listas"></a>
-### Listas
+### Lists
 
 ```hs
+-- Divide la cadena en palabras utilizando espacios en blanco (espacios, tabulaciones, y saltos de línea) como delimitadores
+words :: String -> [String]
+-- Toma una lista de palabras y las concatena en una única cadena, separando cada palabra por un espacio en blanco.
+unwords :: [String] -> String
+
 -- Toman un predicado y una lista y comprueban si el predicado se satisface para algún o para todos los elementos respectivamente.
 all :: Foldable t => (a -> Bool) -> t a -> Bool
 any :: Foldable t => (a -> Bool) -> t a -> Bool
@@ -51,6 +60,9 @@ take :: Int -> [a] -> [a]
 
 -- Se utiliza para eliminar los primeros n elementos de una lista.
 drop :: Int -> [a] -> [a]
+
+ -- Se utiliza para crear una lista que contiene múltiples repeticiones de un mismo valor.
+replicate :: Int -> a -> [a]
 
 -- Toma una lista de booleanos y devuelve True solo si todos los elementos de la lista son True.
 and :: Foldable t => t Bool -> Bool
@@ -80,7 +92,7 @@ init :: [a] -> [a]
 ```
 
 <a name="listas_infinitas"></a>
-#### Listas infinitas
+#### Infinite lists
 
 ```hs
 -- Repite el único elemento
@@ -90,8 +102,10 @@ repeat :: a -> [a]
 cycle :: [a] -> [a]
 ```
 
+---
+
 <a name="tuplas"></a>
-### Tuplas
+### Tuples
 
 ```hs
 -- Regresa el 1er elemento
@@ -104,8 +118,10 @@ snd :: (a, b) -> b
 zip :: [a] -> [b] -> [(a, b)]
 ```
 
-<a name="otras"></a>
-### Otras
+---
+
+<a name="nf_higher_order_functions"></a>
+## Higher Order Functions
 
 ```hs
 -- Toma una función binaria y dos listas, y devuelve una lista que resulta de aplicar la función binaria a los elementos correspondientes de las dos listas.
@@ -114,15 +130,14 @@ zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 
 -- Devuelve una lista [b] que resulta de aplicar la función a cada elemento de la lista y luego concatenar los resultados.
 concatMap :: (a -> [b]) -> [a] -> [b]
+```
 
- -- Se utiliza para crear una lista que contiene múltiples repeticiones de un mismo valor.
-replicate :: Int -> a -> [a]
+---
 
--- Divide la cadena en palabras utilizando espacios en blanco (espacios, tabulaciones, y saltos de línea) como delimitadores
-words :: String -> [String]
--- Toma una lista de palabras y las concatena en una única cadena, separando cada palabra por un espacio en blanco.
-unwords :: [String] -> String
+<a name="otras"></a>
+### Others
 
+```hs
 -- Convierte un Int a otro más general (útil en length)
 fromIntegral :: (Integral a, Num b) => a -> b
 
@@ -149,18 +164,20 @@ div :: Integral a => a -> a -> a --div 5 2 = 2
 (/) :: Fractional a => a -> a -> a --5/2=2.5
 ```
 
+---
+
 <a name="temas"></a>
-## Temas
+## Topics
 
 <a name="tipos_clases"></a>
-### Tipos y clases de tipos
+### Types and Typeclasses
 
 ```hs
 Eq
 
--- Tipos que poseen orden
+-- For types that have an ordering.
 Ord
--- Toma 2 miembros de la clase y devuelve su orden (GT, EQ, LT)
+-- Takes two Ord members of the same type and returns an ordering: GT, LT or EQ.
 compare :: Ord a => a -> a -> Ordering
 
 -- Toma una cadena y devuelve un valor del tipo
@@ -181,8 +198,10 @@ Integral
 Floating
 ```
 
+---
+
 <a name="recursion"></a>
-### Recursión
+### Recursion
 
 Implementación de funciones nativas
 
@@ -256,18 +275,73 @@ quicksort (x:xs) =
     smallerSorted ++ [x] ++ biggerSorted
 ```
 
+---
+
 <a name="f_ord_sup"></a>
-### Funciónes de Orden Superior
+### Higher Order Functions
 
 <a name="currying"></a>
 #### Currying
+
+Currying is the process of transforming a function that takes multiple arguments in a tuple as its argument, into a function that takes just a **single argument** and **returns another function** which accepts further arguments, one by one, that the original function would receive in the rest of that tuple. 
+
+> All functions in Haskell take just one argument
+
+- It can be said that arrows in the types notation *associate to the right*, so that <code>f :: a -> b -> c</code> is really <code>f :: a -> (b -> c)</code>
+- Functional application, correspondingly, *associates to the left*: <code>f x y</code> is really <code>(f x) y</code>
+
+As an illustration, `div` takes an `Int` and returns something of the type `Int -> Int`. So, <code>(div 11) 2</code> yields <code>5</code>
+
+<a name="partial_application"></a>
+##### Partial Application
+
+```hs
+-- (+) :: Num a => a -> a -> a
+let addOne = (+) 1
+addOne 10 --11
+```
+`addOne` is the result of partially applying `(+)`. It is a new function that takes a Num, adds 1 to it and returns that as the result. This means that `(+)` actually takes one argument and returns a function that takes another argument and returns a Num. 
+
+Using partial application (calling functions with too few parameters, if you will) is a neat way to create **functions on the fly** so we can pass them to another function or to seed them with some data.
+
+Functions can also be partially applied by using sections (simply surround it with parentheses and only supply a parameter on one side). That creates a function that takes one parameter and then applies it to the side that's missing an operand.
+
+```hs
+compareWithHundred :: (Num a, Ord a) => a -> Ordering
+compareWithHundred = compare 100
+
+isUpperAlphanum :: Char -> Bool
+isUpperAlphanum = (`elem` ['A'..'Z'])
+```
+
+In JavaScript
+```js
+const divisionNormal_ArrowFunction = (a,b) => a/b;
+const divisionNormal = function (a, b) {
+  return a / b;
+}
+divisionNormal(10,2); //5
+
+const divisionCurry_ArrowFunction = a => b => a/b;
+const divisionCurry = function (a) {
+  return function(b) {
+  	return a / b;
+	}
+}
+divisionCurry(10)(2); //5
+
+const divWithTen = divisionCurry(10);
+divWithTen(2); //5
+```
+
+---
 
 <a name="folding"></a>
 #### Folding
 
 Existe una familia de funciones en Haskell para modelar un algoritmo que permite 
 
-> procesar una estructura de datos para construir un valor
+> Procesar una estructura de datos para construir un valor
  
 , a esta idea le decimos foldear (derivado del inglés, “to fold”) o reducir.
 
@@ -307,8 +381,10 @@ foldr (\x ys -> 1 : ys) [] [1..5] --[1,1,1,1,1] map (\x->1) [1..5]
 foldl (\x ys -> ys : x) [] [1..5] --[5,4,3,2,1]
 ```
 
+---
+
 <a name="modulos"></a>
-## Módulos
+## Modules
 
 ### Data.Char
 ```hs
