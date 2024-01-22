@@ -13,25 +13,44 @@
 <a name="nativas"></a>
 ## Funciones nativas
 
+<a name="operadores"></a>
+### Operadores
+
 ```hs
--- Toma una función binaria y dos listas, y devuelve una lista que resulta de aplicar la función binaria a los elementos correspondientes de las dos listas.
--- Si una de las listas es más corta que la otra, los elementos sobrantes de la lista más larga se ignoran
-zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+-- Este operador se utiliza para agregar un elemento al principio de una lista
+-- '' char
+:
 
--- Devuelve una lista [b] que resulta de aplicar la función a cada elemento de la lista y luego concatenar los resultados.
-concatMap :: (a -> [b]) -> [a] -> [b]
+-- Este operador se utiliza para concatenar dos listas
+-- "" string
+++
+```
 
- -- Se utiliza para crear una lista que contiene múltiples repeticiones de un mismo valor.
-replicate :: Int -> a -> [a]
+<a name="listas"></a>
+### Listas
 
+```hs
 -- Toman un predicado y una lista y comprueban si el predicado se satisface para algún o para todos los elementos respectivamente.
 all :: Foldable t => (a -> Bool) -> t a -> Bool
 any :: Foldable t => (a -> Bool) -> t a -> Bool
 
--- Divide la cadena en palabras utilizando espacios en blanco (espacios, tabulaciones, y saltos de línea) como delimitadores
-words :: String -> [String]
--- Toma una lista de palabras y las concatena en una única cadena, separando cada palabra por un espacio en blanco.
-unwords :: [String] -> String
+-- Máximo
+maximum :: (Foldable t, Ord a) => t a -> a
+
+-- Mínimo
+minimum :: (Foldable t, Ord a) => t a -> a
+
+-- Longitud. Regresa Int!!
+length :: Foldable t => t a -> Int
+
+-- Suma
+sum :: (Foldable t, Num a) => t a -> a
+
+-- Producto
+product :: (Foldable t, Num a) => t a -> a
+
+-- Contiene
+elem :: (Foldable t, Eq a) => a -> t a -> Bool
 
 -- Tomar los primeros n elementos de una lista
 take :: Int -> [a] -> [a]
@@ -43,23 +62,97 @@ drop :: Int -> [a] -> [a]
 and :: Foldable t => t Bool -> Bool
 -- Devuelve True solo si existe algún elemento True en la lista.
 or :: Foldable t => t Bool -> Bool
+```
+
+<a name="listas_infinitas"></a>
+#### Listas infinitas
+
+```hs
+-- Repite el único elemento
+repeat :: a -> [a]
+
+-- Ciclo de listas iguales
+cycle :: [a] -> [a]
+```
+
+<a name="tuplas"></a>
+### Tuplas
+
+```hs
+-- Regresa el 1er elemento
+fst :: (a, b) -> a
+
+-- Regresa el 2do elemento
+snd :: (a, b) -> b
+
+-- Toma 2 listas y las une en 1, juntando sus elementos en una tupla
+zip :: [a] -> [b] -> [(a, b)]
+```
+
+<a name="otras"></a>
+### Otras
+
+```hs
+-- Toma una función binaria y dos listas, y devuelve una lista que resulta de aplicar la función binaria a los elementos correspondientes de las dos listas.
+-- Si una de las listas es más corta que la otra, los elementos sobrantes de la lista más larga se ignoran
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+
+-- Devuelve una lista [b] que resulta de aplicar la función a cada elemento de la lista y luego concatenar los resultados.
+concatMap :: (a -> [b]) -> [a] -> [b]
+
+ -- Se utiliza para crear una lista que contiene múltiples repeticiones de un mismo valor.
+replicate :: Int -> a -> [a]
+
+-- Divide la cadena en palabras utilizando espacios en blanco (espacios, tabulaciones, y saltos de línea) como delimitadores
+words :: String -> [String]
+-- Toma una lista de palabras y las concatena en una única cadena, separando cada palabra por un espacio en blanco.
+unwords :: [String] -> String
+
+-- Convierte un Int a otro más general (útil en length)
+fromIntegral :: (Integral a, Num b) => a -> b
 
 -- ¿Es impar?
 odd :: Integral a => a -> Bool
 -- ¿Es par?
 even :: Integral a => a -> Bool
 
--- Este operador se utiliza para agregar un elemento al principio de una lista
--- '' char
-:
+-- Elemento siguiente
+succ :: Enum a => a -> a
 
--- Este operador se utiliza para concatenar dos listas
--- "" string
-++
+-- Resta
+subtract :: Num a => a -> a -> a
+
+-- División redondea a entero
+div :: Integral a => a -> a -> a --div 5 2 = 2
+
+-- División
+(/) :: Fractional a => a -> a -> a --5/2=2.5
 ```
 
 <a name="temas"></a>
 ## Temas
+
+<a name="tipos_clases"></a>
+### Tipos y clases de tipos
+
+```hs
+Eq
+
+-- Toma una cadena y devuelve un valor del tipo
+read :: Read a => String -> a
+
+show :: Show a => a -> String
+
+Enum
+
+Bounded
+
+Num
+
+Integral
+
+Floating
+```
 
 <a name="f_ord_sup"></a>
 ### Funciónes de Orden Superior
