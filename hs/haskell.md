@@ -29,6 +29,10 @@
 ### Lists
 
 ```hs
+-- It takes a predicate and a list and then goes from the beginning of the list and returns its elements while the predicate holds true.
+-- Once an element is found for which the predicate doesn't hold, it stops.
+takeWhile :: (a -> Bool) -> [a] -> [a]
+
 -- Divide la cadena en palabras utilizando espacios en blanco (espacios, tabulaciones, y saltos de línea) como delimitadores
 words :: String -> [String]
 -- Toma una lista de palabras y las concatena en una única cadena, separando cada palabra por un espacio en blanco.
@@ -83,7 +87,7 @@ init :: [a] -> [a]
 -- Takes a function and a list and applies that function to every element in the list, producing a new list
 map :: (a -> b) -> [a] -> [b]
 
--- Condición y Lista
+-- Takes a predicate and a list and then returns the list of elements that satisfy the predicate.
 filter :: (a -> Bool) -> [a] -> [b]
 
 -- Lista
@@ -380,13 +384,42 @@ map' :: (a -> b) -> [a] -> [b]
 map' _ [] = []
 map' f (x:xs) = f x : map' f xs
 
-map (++ "!") ["BIFF", "BANG", "POW"] --["BIFF!","BANG!","POW!"]
+map (++ "!") ["BIFF", "BANG", "POW"] -- ["BIFF!","BANG!","POW!"]
+
+filter' :: (a -> Bool) -> [a] -> [a]
+filter' _ [] = []
+filter' p (x:xs) 
+    | p x       = x : filter' p xs
+    | otherwise = filter' p xs
+
+filter null [[], [4]] --[]
+
+takeWhile' :: (a -> Bool) -> [a] -> [a]
+takeWhile' p [] = []
+takeWhile' p (x:xs)
+ | p x = x : takeWhile' p xs
+ | otherwise = []
+
+takeWhile (/=' ') "Hola mundo" -- "Hola"
 ```
 
-Ejercicios: 
+Exercises: 
 
+- Find the sum of all odd squares that are smaller than 10,000
 ```hs
-filter null [[], [4]] --[]
+sum (takeWhile (<10000) (filter odd (map (^2) [1..]))) -- 166650
+sum (takeWhile (<10000) [n^2 | n <- [1..], odd (n^2)]) -- 166650
+```
+
+- Find the largest number under 100,000 that's divisible by 3829
+```hs
+largestDivisible :: (Integral a) => a
+largestDivisible = head (filter (\x -> (x `mod` 3829) == 0) [100000..])
+```
+
+- Collatz sequences. For all starting numbers between 1 and 100, how many chains have a length greater than 15?
+```hs
+
 ```
 
 - Convierte cadena a mayúsculas.
