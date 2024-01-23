@@ -15,6 +15,7 @@
   - [Higher Order Functions](#f_ord_sup)
     - [Currying](#currying)
        - [Partial Application](#partial_application)
+    - [High-order](#high_order)
     - [Folding](#folding)
   - [Módulos](#modulos)
 - [Codewars](#codeWars)
@@ -127,6 +128,9 @@ zip :: [a] -> [b] -> [(a, b)]
 -- Toma una función binaria y dos listas, y devuelve una lista que resulta de aplicar la función binaria a los elementos correspondientes de las dos listas.
 -- Si una de las listas es más corta que la otra, los elementos sobrantes de la lista más larga se ignoran
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+
+-- It evaluates the function flipping the order of arguments
+flip :: (a -> b -> c) -> b -> a -> c
 
 -- Devuelve una lista [b] que resulta de aplicar la función a cada elemento de la lista y luego concatenar los resultados.
 concatMap :: (a -> [b]) -> [a] -> [b]
@@ -332,6 +336,35 @@ divisionCurry(10)(2); //5
 
 const divWithTen = divisionCurry(10);
 divWithTen(2); //5
+```
+
+---
+
+<a name="high_order"></a>
+#### High-order
+
+> A higher-order function is a function that takes other functions as arguments or returns a function as result. 
+
+```hs
+applyTwice :: (a -> a) -> a -> a
+applyTwice f x = f (f x)
+```
+
+If our function requires us to pass it a function that takes only one parameter, we can just partially apply a function to the point where it takes only one parameter and then pass it. <code>applyTwice (3:) [1] --[3,3,1]</code>
+```hs
+zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith' _ [] _ = []
+zipWith' _ _ [] = []
+zipWith' f (a:as) (b:bs) = f a b : zipWith' f as bs
+
+flip' :: (a -> b -> c) -> b -> a -> c
+flip' f x y = f y x
+
+-- We take advantage of the fact that functions are curried
+let f = (subtract)
+let f_flip = flip f
+let f_flip_3 = f_flip 3
+f_flip_3 4 -- -1
 ```
 
 ---
