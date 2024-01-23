@@ -386,6 +386,9 @@ map' f (x:xs) = f x : map' f xs
 
 map (++ "!") ["BIFF", "BANG", "POW"] -- ["BIFF!","BANG!","POW!"]
 
+let listOfFuns = map (*) [0..]
+(listOfFuns !! 4) 5 -- 20
+
 filter' :: (a -> Bool) -> [a] -> [a]
 filter' _ [] = []
 filter' p (x:xs) 
@@ -419,7 +422,19 @@ largestDivisible = head (filter (\x -> (x `mod` 3829) == 0) [100000..])
 
 - Collatz sequences. For all starting numbers between 1 and 100, how many chains have a length greater than 15?
 ```hs
+-- We take a natural number.
+-- If that number is even, we divide it by two. If it's odd, we multiply it by 3 and then add 1 to that.
+-- We take the resulting number and apply the same thing to it, which produces a new number and so on.
+-- In essence, we get a chain of numbers.
+-- It is thought that for all starting numbers, the chains finish at the number 1.
+collatz :: (Integral a) => a -> [a]
+collatz 1 = [1]
+collatz n
+ | even n = n : collatz (n `div` 2)
+ | odd n = n : collatz (n*3 + 1)
 
+numLongChains :: Int
+numLongChains = length (filter (\x -> length x > 15) (map collatz [1..100]))
 ```
 
 - Convierte cadena a mayúsculas.
