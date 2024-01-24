@@ -491,11 +491,23 @@ wel l = filter (not . null) l
 <a name="lambdas"></a>
 #### Lambdas
 
-Ejercicios:
+> An anonymous function is a function without a name. `(\x y -> x + y)`
+
+You can **pattern match** in lambdas. THe only difference is that you can't define several patterns for one parameter, like making a `[]` and a `(x:xs)`.
+
+Lambdas are normally *surrounded by parentheses* unless we mean for them to *extend all the way to the right*. Here's something interesting: due to the way functions are curried by default, these two are equivalent:
 
 ```hs
-(\x -> x+1) 10 -- 11
+addThree :: (Num a) => a -> a -> a -> a
+addThree x y z = x + y + z
+
+addThree :: (Num a) => a -> a -> a -> a
+addThree = \x -> \y -> \z -> x + y + z
 ```
+
+So use lambdas in this way when you want to make it explicit that your function is mainly meant to be *partially applied* and *passed on to a function as a parameter*.
+
+Exercises:
 
 - Determina cual es positivo, negativo.
   - **lambdas** y `map`
