@@ -16,6 +16,7 @@
     - [Currying](#currying)
        - [Partial Application](#partial_application)
     - [High-order](#high_order)
+    - [Lambdas](#lambdas)
     - [Folding](#folding)
   - [Módulos](#modulos)
 - [Codewars](#codeWars)
