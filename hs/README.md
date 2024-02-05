@@ -2,4 +2,11 @@
 
 ## Haskell
 
-Repositorio dedicado a aprender Haskell con varias páginas de internet, entre ellas http://aprendehaskell.es/main.html y ejercicios de https://www.codewars.com/dashboard. También, con las notas del laboratorio de Estructuras Discretas.
+- https://learnyouahaskell.com/chapters
+- https://wiki.haskell.org/Haskell
+- http://zvon.org/other/haskell/Outputglobal/index.html
+
+- https://downloads.haskell.org/ghc/latest/docs/libraries/
+- https://hoogle.haskell.org/
+
+- https://www.codewars.com/dashboard
