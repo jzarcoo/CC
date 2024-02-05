@@ -18,6 +18,8 @@
     - [High-order](#high_order)
     - [Lambdas](#lambdas)
     - [Folding](#folding)
+    - [Function application with $](#pesos)
+    - [Function composition](#Function_composition)
   - [Módulos](#modulos)
 - [Codewars](#codeWars)
   
@@ -148,6 +150,20 @@ flip :: (a -> b -> c) -> b -> a -> c
 
 -- Devuelve una lista [b] que resulta de aplicar la función a cada elemento de la lista y luego concatenar los resultados.
 concatMap :: (a -> [b]) -> [a] -> [b]
+
+-- Asocia por la derecha/final (\x acc -> ...)
+foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
+foldr1 :: Foldable t => (a -> a -> a) -> t a -> a
+
+-- Asocia por la izquierda/inicio (\acc x -> ...)
+foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
+foldl1 :: Foldable t => (a -> a -> a) -> t a -> a
+
+-- lowest precedence & right-associative.
+($) :: (a -> b) -> a -> b
+
+-- Function composition
+(.) :: (b -> c) -> (a -> b) -> a -> c
 ```
 
 ---
@@ -552,11 +568,11 @@ replace s c1 c2 = map
 <a name="folding"></a>
 #### Folding
 
-Existe una familia de funciones en Haskell para modelar un algoritmo que permite 
+Folds can be used to implement any function where you traverse a list once, element by element, and then return something based on that. 
 
-> Procesar una estructura de datos para construir un valor
- 
-, a esta idea le decimos foldear (derivado del inglés, “to fold”) o reducir.
+> Reduce a data structure to some single value
+
+The `x:xs` pattern is very common
 
 ```hs
 sum [] = 0 
@@ -569,16 +585,16 @@ concatenar [] = []
 concatenar (x:xs) = (++) x (concatenar xs)
 ```
 
-Podemos generalizar el algoritmo anterior con
-1. Una función binaria
-2. Un valor acumulador inicial
-3. Una lista
+A fold takes 
+1. A binary function
+2. A starting value (accumulator)
+3. A list to fold up. 
 
 ```hs
--- Asocia por la derecha
+-- Asocia por la derecha/final (\x acc -> ...)
 foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
 
--- Asocia por la izquierda
+-- Asocia por la izquierda/inicio (\acc x -> ...)
 foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
 ```
 
@@ -592,6 +608,118 @@ foldr (:) [6..10] [1..5] --[1,2,3,4,5,6,7,8,9,10]
 foldr (\x ys -> 1 : ys) [] [1..5] --[1,1,1,1,1] map (\x->1) [1..5]
 
 foldl (\x ys -> ys : x) [] [1..5] --[5,4,3,2,1]
+```
+
+The `foldl1` and `foldr1` functions work much like foldl and foldr, only you don't need to provide them with an explicit starting value. They assume the first (or last) element of the list to be the starting value and then start the fold with the element next to it.
+
+```hs
+elem' :: (Eq a) => a -> [a] -> Bool
+elem' y ys = foldl (\acc x -> if x == y then True else acc) False ys
+
+map' :: (a -> b) -> [a] -> [b]
+map' f xs = foldr (\x acc -> f x : acc) [] xs
+
+maximum' :: (Ord a) => [a] -> a
+maximum' = foldr1 (\x acc -> if x > acc then x else acc)
+
+reverse' :: [a] -> [a]
+reverse' = foldl (\acc x -> x : acc) []
+
+product' :: (Num a) => [a] -> a
+product' = foldr1 (*)
+
+filter' :: (a -> Bool) -> [a] -> [a]
+filter' p = foldr (\x acc -> if p x then x : acc else acc) []
+
+head' :: [a] -> a
+head' = foldr1 (\x _ -> x)
+
+last' :: [a] -> a
+last' = foldl1 (\_ x -> x)
+```
+
+`scanl` and `scanr` are like foldl and foldr, only they report all the intermediate accumulator states in the form of a list. There are also `scanl1` and `scanr1`, which are analogous to foldl1 and foldr1.
+
+- When using a scanl, the final result will be in the last element of the resulting list while a scanr will place the result in the head.
+
+```hs
+scanl (+) 0 [3,5,2,1] --[0,3,8,10,11]
+scanr (+) 0 [3,5,2,1] --[11,8,3,1,0]
+scanl1 (\acc x -> if x > acc then x else acc) [3,4,5,3,7,9,2,1] --[3,4,5,5,7,9,9,9]
+scanl (flip (:)) [] [3,2,1] --[[],[3],[2,3],[1,2,3]]
+```
+
+Exercises:
+
+1. How many elements does it take for the sum of the roots of all natural numbers to exceed 1000?
+```hs
+sqrtSums :: Int
+sqrtSums = length (takeWhile (<1000) (scanl1 (+) (map sqrt [1..]))) + 1
+```
+
+--- 
+
+<a name="pesos"></a>
+#### Function application with $
+
+```hs
+($) :: (a -> b) -> a -> b
+f $ x = f x
+```
+
+Function application with $ is **right-associative** and has the **lowest precedence**.
+
+Most of the time, it's a convenience function so that we don't have to write so many *parentheses*.
+
+When a $ is encountered, the expression on its right is applied as the parameter to the function on its left. 
+
+$ means that **function application can be treated just like another function**. That way, we can, for instance, map function application over a list of functions.
+
+```hs
+map ($ 3) [(4+), (10*), (^2), sqrt] --[7.0,30.0,9.0,1.7320508075688772]
+
+sqrt $ 3 + 4 + 9
+sum $ filter (> 10) $ map (*2) [2..10]
+```
+
+--- 
+
+<a name="Function_composition"></a>
+#### Function composition
+
+Many times, a point free style is more readable and concise
+
+```hs
+(.) :: (b -> c) -> (a -> b) -> a -> c
+f . g = \x -> f (g x)
+```
+
+```hs
+map (negate . abs) [5,-3,-6,7,-3,2,-19,24] --[-5,-3,-6,-7,-3,-2,-19,-24]
+```
+
+what about functions that take several parameters? 
+If we want to use them in function composition, we usually have to partially apply them just so much that each function takes just one parameter
+
+```hs
+replicate 5 . max 6.7 $ 8.9 --[8.9,8.9,8.9,8.9,8.9]
+```
+
+Exercise:
+
+1. Find the sum of all odd squares that are smaller than 10,000. 
+```hs
+oddSquareSum :: Integer
+oddSquareSum = sum (takeWhile (<10000) (filter odd (map (^2) [1..])))
+
+oddSquareSum :: Integer
+oddSquareSum = sum . takeWhile (<10000) . filter odd . map (^2) $ [1..]
+
+oddSquareSum :: Integer
+oddSquareSum = 
+    let oddSquares = filter odd $ map (^2) [1..]
+        belowLimit = takeWhile (<10000) oddSquares
+    in  sum belowLimit
 ```
 
 ---
