@@ -738,6 +738,17 @@ digitToInt :: Char -> Int
 ```hs
 -- Elimina duplicados de una lista
 nub :: Eq a => [a] -> [a]
+
+-- Toma una lista y agrupa los elementos adyacentes que sean iguales en sublistas.
+group :: Eq a => [a] -> [[a]]
+
+sort :: Ord a => [a] -> [a]
+
+-- Ordene una lista comparando los resultados de una función clave aplicada a cada elemento
+-- sortOn f es equivalente a sortBy (comparando f),
+-- 	pero tiene la ventaja de rendimiento de evaluar f solo una vez para cada elemento en la lista de entrada.
+-- 	Esto se denomina paradigma de decorar-ordenar-desdecorar o transformada de Schwartz.
+sortOn :: Ord b => (a -> b) -> [a] -> [a]
 ```
 
 ### Data.Set
@@ -1167,6 +1178,18 @@ Bonus points (not really, but just for fun):
     Avoid sorting the entire array of unique words.
 
 ```hs
+module TopWords (top3) where
+
+import Data.Char (isAlpha, toLower)
+import Data.List (group, sort, sortOn)
+
+top3 :: [Char] -> [[Char]]
+top3 str = map fst . take 3 $ reverse lst
+ where
+    condition = foldr (\x acc -> (if (isAlpha x || x == '\'' || x == ' ') then toLower x else ' ') : acc) [] str
+    clean = filter (\x -> not $ all (=='\'') x) $ words condition
+    conRepeticiones = map (\l@(x:xs) -> (x, length l)) . group . sort $ clean
+    lst = sortOn snd $ conRepeticiones
 ```
 
 18. ****
