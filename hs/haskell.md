@@ -1192,20 +1192,60 @@ top3 str = map fst . take 3 $ reverse lst
     lst = sortOn snd $ conRepeticiones
 ```
 
-18. ****
+18. **Square(n) Sum**
+
+Complete the square sum function so that it squares each number passed into it and then sums the results together.
+
+For example, for [1, 2, 2] it should return 9 because 12+22+22=91^2 + 2^2 + 2^2 = 912+22+22=9.
+
 ```hs
+squareSum :: [Integer] -> Integer
+squareSum = sum . map (^2)
 ```
 
-19. ****
+19. **Unique In Order**
+    
+Implement the function unique_in_order which takes as argument a sequence and returns a list of items without any elements with the same value next to each other and preserving the original order of elements.
+
+For example:
+
+uniqueInOrder "AAAABBBCCDAABBB" == "ABCDAB"
+uniqueInOrder "ABBCcAD"         == "ABCcAD"
+uniqueInOrder [1,2,2,3,3]       == [1,2,3]
+
 ```hs
+import Data.List (group)
+
+uniqueInOrder :: Eq a => [a] -> [a]
+uniqueInOrder lst = foldr (\(x:xs) acc -> x : acc) [] $ group lst
+-- map head . group
 ```
 
-20. ****
+20. **Sum of positive**
+
+You get an array of numbers, return the sum of all of the positives ones.
+
+Example [1,-4,7,12] => 1 + 7 + 12 = 20
+
+Note: if there is nothing to sum, the sum is default to 0.
+
 ```hs
+positiveSum :: [Int] -> Int
+positiveSum = sum . filter (>=0)
 ```
 
-21. ****
+21. **Sentence Smash**
+
+Write a function that takes an array of words and smashes them together into a sentence and returns the sentence. You can ignore any need to sanitize words or add punctuation, but you should add spaces between each word. Be careful, there shouldn't be a space at the beginning or the end of the sentence!
+Example
+
+['hello', 'world', 'this', 'is', 'great']  =>  'hello world this is great'
+
 ```hs
+import Data.List (unwords)
+
+smash :: [String] -> String
+smash = unwords
 ```
 
 22. ****
