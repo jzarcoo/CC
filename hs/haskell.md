@@ -749,6 +749,32 @@ sort :: Ord a => [a] -> [a]
 -- 	pero tiene la ventaja de rendimiento de evaluar f solo una vez para cada elemento en la lista de entrada.
 -- 	Esto se denomina paradigma de decorar-ordenar-desdecorar o transformada de Schwartz.
 sortOn :: Ord b => (a -> b) -> [a] -> [a]
+
+```
+
+```hs
+lookup :: Eq a => a -> [(a, b)] -> Maybe b
+
+-- Mi implementación
+findKey :: (Eq k) => k -> [(k,v)] -> Maybe v
+findKey key = foldr (\(k,v) acc -> if key == k then Just v else acc) Nothing
+```
+
+### Data.Map
+
+Las **listas de asociación** (también llamadas **diccionarios**) son listas que son utilizadas para almacenar pares *clave-valor* donde el orden no importa.
+
+```hs
+findKey :: (Eq k) => k -> [(k,v)] -> Maybe v
+findKey key = foldr (\(k,v) acc -> if key == k then Just v else acc) Nothing
+```
+
+```hs
+import Data.Map
+
+-- Tomo una lista de asociación (en forma de lista) y devuelve un diccionario con las mismas asociaciones.
+-- En caso de que existan claves duplicadas en la lista de asociación, los duplicados son descartados.
+Data.Map.fromList :: Ord k => [(k, a)] -> Map k a
 ```
 
 ### Data.Set
@@ -760,6 +786,8 @@ import Data.Set
 quitar_duplicados :: (Ord a) => [a] -> [a]
 quitar_duplicados = toList . fromList
 ```
+
+### Data.Tree
 
 <a name="codeWars"></a>
 ## Codewars
