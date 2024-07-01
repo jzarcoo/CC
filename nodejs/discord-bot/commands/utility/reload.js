@@ -5,6 +5,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('reload')
 		.setDescription('Reloads a command.')
+		// Adding a required string option to the command
 		.addStringOption(option =>
 			option.setName('command')
 				.setDescription('The command to reload.')
