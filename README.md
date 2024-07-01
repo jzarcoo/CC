@@ -1,1 +1,2 @@
-# Ciencias de la computación
+# Computer Science
+Learning programming languages
