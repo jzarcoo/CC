@@ -34,11 +34,11 @@ Constraints:
 
 */
 class Pow {
-  public double myPow(double x, int n) {
+    public double myPow(double x, int n) {
+        if (Double.isNaN(x) || Double.isInfinite(x)) return Double.NaN;
+        if (x == 0) return (n <= 0) ? Double.POSITIVE_INFINITY : 0.0;
         if (n == 0 || x == 1) return 1;
         if (x == -1.0) return (n % 2 == 0) ? 1.0 : -1.0;
-        if (x == 0) return (n <= 0) ? Double.POSITIVE_INFINITY : 0.0;
-        if (Double.isInfinite(x) || Double.isNaN(x)) return Double.NaN;
         long N = n; // Integer.MIN_VALUE
         if (N < 0) {
             x = 1 / x;
@@ -47,7 +47,7 @@ class Pow {
         double pow = 1;
         // Exponenciación binaria. O(logn) multiplicaciones
         while (N != 0) {
-            if (N % 2 == 1)
+            if ((N & 1) == 1)
                 pow *= x;
             x *= x;
             N >>= 1;
