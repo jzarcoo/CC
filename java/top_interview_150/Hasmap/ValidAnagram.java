@@ -3,8 +3,6 @@ Given two strings s and t, return true if t is an anagram of s, and false otherw
 
 An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
 
- 
-
 Example 1:
 
 Input: s = "anagram", t = "nagaram"
@@ -15,27 +13,39 @@ Example 2:
 Input: s = "rat", t = "car"
 Output: false
 
- 
-
 Constraints:
 
     1 <= s.length, t.length <= 5 * 104
     s and t consist of lowercase English letters.
 
- 
-
 Follow up: What if the inputs contain Unicode characters? How would you adapt your solution to such a case?
-
 */
 
+// 5 ms
+// 42.72 MB
+class ValidAnagram {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length())
+            return false;
+        int[] counter = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            counter[s.charAt(i) - 'a']++;
+            counter[t.charAt(i) - 'a']--;
+        }
+        for (int i = 0; i < 26; i++)
+            if (counter[i] != 0)
+                return false;
+        return true;
+    }
+}
+
+/**
 // 4 ms
 // 43.97 MB
 class ValidAnagram {
-  /**
-  Implementation note: The sorting algorithm is a Dual-Pivot Quicksort by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. 
-  This algorithm offers O(n log(n)) performance on many data sets that cause other quicksorts to degrade to quadratic performance, 
-  and is typically faster than traditional (one-pivot) Quicksort implementations.
-  */
+  // Implementation note: The sorting algorithm is a Dual-Pivot Quicksort by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. 
+  // This algorithm offers O(n log(n)) performance on many data sets that cause other quicksorts to degrade to quadratic performance, 
+  // and is typically faster than traditional (one-pivot) Quicksort implementations.
     public boolean isAnagram(String s, String t) {
         if (s.length() != t.length())
             return false;
@@ -46,26 +56,11 @@ class ValidAnagram {
         return Arrays.equals(arr1, arr2);
     }
 }
-
-/**
-// 6 ms
-// 42.77 MB
-class ValidAnagram {
-    public boolean isAnagram(String s, String t) {
-        if (s.length() != t.length())
-            return false;
-        int[] arr1 = new int[26];
-        int[] arr2 = new int[26];
-        for (int i = 0; i < s.length(); i++) {
-            arr1[s.charAt(i) - 'a']++;
-            arr2[t.charAt(i) - 'a']++;
-        }
-        return Arrays.equals(arr1, arr2);
-    }
-}
 */
 
 /**
+import java.util.HashMap;
+import java.util.Map;
 // 23 ms
 // 42.8 MB
 class ValidAnagram {
