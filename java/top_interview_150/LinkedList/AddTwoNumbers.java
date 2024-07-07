@@ -40,16 +40,15 @@ class AddTwoNumbers {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2, int c) {
         if (l1 == null && l2 == null && c == 0) 
             return null;
-        int sum = c;
         if (l1 != null) {
-            sum += l1.val;
+            c += l1.val;
             l1 = l1.next;
         }
         if (l2 != null) {
-            sum += l2.val;
+            c += l2.val;
             l2 = l2.next;
         }
-        return new ListNode(sum % 10, addTwoNumbers(l1, l2, sum / 10));
+        return new ListNode(c % 10, addTwoNumbers(l1, l2, c / 10));
     }
     
     /** 
