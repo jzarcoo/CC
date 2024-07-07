@@ -38,6 +38,23 @@ Follow up: Can you solve it using O(1) (i.e. constant) memory?
  * }
  */
 public class Solution {
+
+    public boolean hasCycle(ListNode head) {
+        return hasCycle(head, head);
+    }
+
+    public boolean hasCycle(ListNode slow, ListNode fast) {
+        if (fast == null || fast.next == null)
+            return false;
+        slow = slow.next;
+        fast = fast.next.next;
+        if (fast == slow)
+            return true;
+        return hasCycle(slow, fast);
+    }
+
+    /**
+    // Iterative
     public boolean LinkedListCycle(ListNode head) {
         ListNode pos = head;
         while (pos != null && pos.next != null) {
@@ -48,4 +65,5 @@ public class Solution {
         }
         return false;
     }
+    */
 }
