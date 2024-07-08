@@ -64,3 +64,48 @@ class SortList {
         }
     }
 }
+
+/**
+// Iterative
+class SortList {
+    class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        ListNode m = getMiddle(head, head);
+        ListNode head2 = m.next;
+        m.next = null;
+        return merge(sortList(head), sortList(head2));
+    }
+
+    public ListNode getMiddle(ListNode slow, ListNode fast) {
+        if (slow == null)
+            return null;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;   
+        }
+        return slow;
+    }
+
+    public ListNode merge(ListNode list1, ListNode list2) {
+        ListNode list3 = new ListNode();
+        ListNode sort = list3;
+        while (list1 != null && list2 != null) {
+            if (list1.val <= list2.val) {
+                list3.next = list1;
+                list1 = list1.next;
+            } else {
+                list3.next = list2;
+                list2 = list2.next;
+            }
+            list3 = list3.next;
+        }
+        if (list1 == null) 
+            list3.next = list2;
+        if (list2 == null) 
+            list3.next = list1;
+        return sort.next;
+    }
+}
+*/
