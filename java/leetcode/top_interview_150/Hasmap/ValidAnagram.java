@@ -21,46 +21,37 @@ Constraints:
 Follow up: What if the inputs contain Unicode characters? How would you adapt your solution to such a case?
 */
 
-// 5 ms
-// 42.72 MB
-class ValidAnagram {
-    public boolean isAnagram(String s, String t) {
-        if (s.length() != t.length())
-            return false;
-        int[] counter = new int[26];
-        for (int i = 0; i < s.length(); i++) {
-            counter[s.charAt(i) - 'a']++;
-            counter[t.charAt(i) - 'a']--;
-        }
-        for (int i = 0; i < 26; i++)
-            if (counter[i] != 0)
-                return false;
-        return true;
-    }
-}
-
-/**
-// 4 ms
-// 43.97 MB
-class ValidAnagram {
-  // Implementation note: The sorting algorithm is a Dual-Pivot Quicksort by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. 
-  // This algorithm offers O(n log(n)) performance on many data sets that cause other quicksorts to degrade to quadratic performance, 
-  // and is typically faster than traditional (one-pivot) Quicksort implementations.
-    public boolean isAnagram(String s, String t) {
-        if (s.length() != t.length())
-            return false;
-        char[] arr1 = s.toCharArray();
-        char[] arr2 = t.toCharArray();
-        Arrays.sort(arr1);
-        Arrays.sort(arr2);
-        return Arrays.equals(arr1, arr2);
-    }
-}
-*/
-
-/**
 import java.util.HashMap;
 import java.util.Map;
+
+// 14ms
+// 44.47MB
+class ValidAnagram {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length())
+            return false;
+        Map<Character, Integer> map = new HashMap<>();
+        for (Character c1 : s.toCharArray()) {
+            Integer n1 = map.putIfAbsent(c1, 1);
+            if (n1 != null) {
+                map.put(c1, ++n1);
+            }
+        }
+        for (Character c2 : t.toCharArray()) {
+            Integer n2 = map.putIfAbsent(c2, -1);
+            if (n2 != null) {
+                if (n2 == 1) {
+                    map.remove(c2);
+                } else {
+                    map.put(c2, --n2);
+                }
+            }
+        }
+        return map.isEmpty();
+    }
+}
+
+/**
 // 23 ms
 // 42.8 MB
 class ValidAnagram {
@@ -82,6 +73,44 @@ class ValidAnagram {
             if (n != 0)
                 return false;
         return true;
+    }
+}
++/
+
+/**
+// 5 ms
+// 42.72 MB
+class ValidAnagram {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length())
+            return false;
+        int[] counter = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            counter[s.charAt(i) - 'a']++;
+            counter[t.charAt(i) - 'a']--;
+        }
+        for (int i = 0; i < 26; i++)
+            if (counter[i] != 0)
+                return false;
+        return true;
+    }
+}
+*/
+/**
+// 4 ms
+// 43.97 MB
+class ValidAnagram {
+  // Implementation note: The sorting algorithm is a Dual-Pivot Quicksort by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. 
+  // This algorithm offers O(n log(n)) performance on many data sets that cause other quicksorts to degrade to quadratic performance, 
+  // and is typically faster than traditional (one-pivot) Quicksort implementations.
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length())
+            return false;
+        char[] arr1 = s.toCharArray();
+        char[] arr2 = t.toCharArray();
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+        return Arrays.equals(arr1, arr2);
     }
 }
 */
