@@ -23,6 +23,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 class RansomNote {
+
+    // 15ms
+    // 45.08MB
+    public boolean canConstruct(String ransomNote, String magazine) {
+        if (magazine.length() < ransomNote.length())
+            return false;
+        Map<Character, Integer> map = new HashMap<>();
+        for (Character c : magazine.toCharArray()) {
+            Integer n = map.putIfAbsent(c, 1);
+            if (n != null) {
+                map.put(c, ++n);
+            }
+        }
+        for (Character c : ransomNote.toCharArray()) {
+            Integer n = map.get(c);
+            if (n == null || n == 0) {
+                return false;
+            } else {
+                map.put(c, --n);
+            }
+        }
+        return true;
+    }
+
+    /**
     // First Attempt
     // 4ms
     // 44.72MB
@@ -43,4 +68,6 @@ class RansomNote {
         }
         return true;
     }
+    */
+    
 }
