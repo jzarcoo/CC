@@ -1,0 +1,13 @@
+class ClimbingStairs {
+    public int climbStairs(int n) {
+	int num1 = 2; // 1
+	int num2 = 3; // 2
+	int sum = n;
+	while (n-- > 3) {
+	    sum = num1 + num2;
+	    num1 = num2;
+	    num2 = sum;
+	}
+	return sum;
+    }
+}
