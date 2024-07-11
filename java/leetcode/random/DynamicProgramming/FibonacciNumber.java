@@ -24,11 +24,9 @@
 */
 class FibonacciNumber {
     public int fib(int n) {
-	if (n < 2)
-	    return n;
 	int num1 = 0;
 	int num2 = 1;
-	int fibonacci = 1;
+	int fibonacci = n;
 	while (n-- > 1) {
 	    fibonacci = num1 + num2;
 	    num1 = num2;
