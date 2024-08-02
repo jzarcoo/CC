@@ -38,7 +38,13 @@ Follow up:
 
 */
 class RotateArray {
-    public void rotate(int[] nums, int k) {
+/**
+Hint: The other line of thought is a tad bit complicated but essentially it builds on the idea of placing each element in its original 
+position while keeping track of the element originally in that position. Basically, at every step, we place an element in its rightful 
+position and keep track of the element already there or the one being overwritten in an additional variable. We can't do this in one 
+linear pass and the idea here is based on cyclic-dependencies between elements.
+*/
+    public void rotate1(int[] nums, int k) {
         k = k % nums.length;
         if (k == 0 || nums.length < 2) {
             return;
@@ -61,5 +67,33 @@ class RotateArray {
             } while (position != prev);
             position++;
         }
+    }
+ 
+/**
+One line of thought is based on reversing the array (or parts of it) to obtain the desired result. Think about how reversal might potentially help us out by using an example.
+*/
+    public void rotate2(int[] nums, int k) {
+     k = k % nums.length;
+        if (k == 0 || nums.length < 2) {
+            return;
+        }
+        reverse(nums, 0, nums.length - 1);
+        reverse(nums, k, nums.length - 1);
+        reverse(nums, 0, k - 1);
+    }
+
+    private void reverse(int[] arr, int l, int r) {
+        while (l < r) {
+            swap(arr, l++, r--);
+        }
+    }
+
+    private void swap(int[] arr, int i, int j) {
+        if (i == j) {
+            return;
+        }
+        int aux = arr[i];
+        arr[i] = arr[j];
+        arr[j] = aux;
     }
 }
