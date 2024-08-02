@@ -38,8 +38,14 @@ Follow up:
 
 */
 class Solution {
+/**
+Hint: The other line of thought is a tad bit complicated but essentially it builds on the idea of placing each element in its original 
+position while keeping track of the element originally in that position. Basically, at every step, we place an element in its rightful 
+position and keep track of the element already there or the one being overwritten in an additional variable. We can't do this in one 
+linear pass and the idea here is based on cyclic-dependencies between elements.
+*/
 public:
-    void rotate(vector<int>& nums, int k) {
+    void rotate1(vector<int>& nums, int k) {
         int n = nums.size();
         k %= n;
         if (k == 0 || n < 2) {
@@ -63,5 +69,16 @@ public:
             } while (position != prev);
             position++;
         }
+    }
+/**
+One line of thought is based on reversing the array (or parts of it) to obtain the desired result. Think about how reversal might potentially help us out by using an example.
+*/
+
+public:
+    void rotate2(vector<int>& nums, int k) {
+        k = k % nums.size();
+        reverse(nums.begin(), nums.end());
+        reverse(nums.begin() + k, nums.end());
+        reverse(nums.begin(), nums.begin() + k);
     }
 };
