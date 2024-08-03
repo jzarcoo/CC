@@ -1,2 +1,2 @@
 # Computer Science
-Learning programming languages
+Learning programming languages.
